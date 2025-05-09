@@ -23,8 +23,8 @@ select * from read_csv('used_car_dataset.csv',
   header = true,
     store_rejects = true,
                 escape = '\',
-  rejects_table = 'user_cars_reject_table',	
-  rejects_scan= 'user_cars_scan_table'
+  rejects_table = 'used_cars_reject_table',	
+  rejects_scan= 'used_cars_scan_table'
 )
 ```
 
@@ -67,7 +67,7 @@ FROM used_cars;
 V dalím kroku by bylo vhodné data z obout tabulek propojit. Nicméně máme pouze názvy aut a není možné tabulky spojit jen na základě rovnosti.  Pro další práci si data nyní uložíme zpět do CSV, abychom je byli schopni načíst z Pythonu.
 
 ```sql
-COPY user_cars TO 'cleaned_user_cars.csv' (HEADER, DELIMITER ',');
+COPY used_cars TO 'cleaned_used_cars.csv' (HEADER, DELIMITER ',');
 ```
 
 ## DuckDB a Python
@@ -82,7 +82,7 @@ con = duckdb.connect()
 
 con.execute("""
     CREATE OR REPLACE TABLE used_cars AS
-    SELECT * FROM read_csv_auto('cleaned_user_cars.csv');
+    SELECT * FROM read_csv_auto('cleaned_used_cars.csv');
 """)
 
 con.execute("""
@@ -107,7 +107,7 @@ con.execute("""
 """)
 
 con.execute("""
-    COPY used_cars_joined TO 'joined_user_cars.parquet' (FORMAT 'parquet');
+    COPY used_cars_joined TO 'joined_used_cars.parquet' (FORMAT 'parquet');
 """)
 ```
 
