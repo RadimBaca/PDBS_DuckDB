@@ -19,7 +19,8 @@ Po zadání `duckdb -ui` se nám otevře notebook kde můžeme začít zadávat 
 
 ```sql
 create or replace table used_cars as 
-select * from read_csv('used_car_dataset.csv',
+select *, row_number() over () id
+from read_csv('used_car_dataset.csv',
   header = true,
     store_rejects = true,
                 escape = '\',
@@ -40,7 +41,7 @@ from read_csv('CARS_1.csv',
 )
 ```
 
-Údaje v tabulce `used_cars` jsou u ceny i najetých km v řetězci. Pro další zpracvování dat by bylo vhodné je normalizovat.
+Údaje v tabulce `used_cars` jsou u ceny i najetých km v řetězci. Pro další zpracování dat by bylo vhodné je normalizovat.
 
 ```sql
 CREATE OR REPLACE TABLE used_cars_normalized AS
